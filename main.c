@@ -48,26 +48,31 @@ patan_init (PatanEspecialidades ** especialidades,
 
 void
 patan_console_ask_for_files (PatanEspecialidades ** especialidades,
-  PatanAlumnos ** alumnos, PatanFiestas ** fiestas)
+  PatanAlumnos ** alumnos, PatanFiestas ** fiestas,
+  char ** especialidades_filename, char ** alumnos_filename,
+  char ** fiestas_filename, char ** asistencias_filename)
 {
   char filename[100];
 
   printf ("Ingrese archivo de especialidades: ");
   scanf ("%s", filename);
   *especialidades = patan_parse_especialidades (filename);
+  *especialidades_filename = strdup (filename);
 
   printf ("Ingrese archivo de alumnos: ");
   scanf ("%s", filename);
   *alumnos = patan_parse_alumnos (filename, *especialidades);
+  *alumnos_filename = strdup (filename);
 
   printf ("Ingrese archivo de fiestas: ");
   scanf ("%s", filename);
   *fiestas = patan_parse_fiestas (filename);
+  *fiestas_filename = strdup (filename);
 
   printf ("Ingrese archivo de asistencias: ");
   scanf ("%s", filename);
   patan_parse_asistencia (filename, *fiestas, *alumnos);
-
+  asistencias_filename = strdup (filename);
 }
 
 static void
@@ -138,7 +143,9 @@ patan_console_loop_exit_screen_message (int * error)
 
 qboolean
 patan_console_menu (PatanEspecialidades * especialidades,
-  PatanAlumnos * alumnos, PatanFiestas * fiestas)
+    PatanAlumnos * alumnos, PatanFiestas * fiestas,
+    const char * especialidades_filename, const char * alumnos_filename,
+    const char * fiestas_filename, const char * asistencias_filename)
 {
   PatanOpt opt;
   qboolean ret;
@@ -430,57 +437,16 @@ patan_console_menu (PatanEspecialidades * especialidades,
     }
     case PATAN_OPT_EXIT:
     {
-      char opt;
-      int error;
 
-      do {
-        printf ("¿Desea guardar los cambios? y/n: ");
-        scanf ("%c", &opt);
-        error = opt != 'y';
-        Q_DEBUG ("opt: %c", opt);
-        Q_DEBUG ("error: %d", error);
-      } while (error);
+      patan_especialidades_serialize (especialidades_filename,
+          especialidades);
 
-      switch (opt) {
-        case PATAN_OPT_YES:
-        {
-          char especialidades_filename[256];
-          char alumnos_filename[256];
-          char fiestas_filename[256];
-          char asistencias_filename[256];
+      patan_alumnos_serialize (alumnos_filename, alumnos);
 
-          printf ("Archivo de especialidades: ");
-          scanf (" %[^\n]s", especialidades_filename);
-          patan_especialidades_serialize (especialidades_filename,
-              especialidades);
+      patan_fiestas_serialize (fiestas_filename, fiestas);
 
-          printf ("Archivo de alumnos: ");
-          scanf (" %[^\n]s", alumnos_filename);
-          patan_alumnos_serialize (alumnos_filename, alumnos);
+      patan_asistencias_serialize (asistencias_filename, fiestas);
 
-          printf ("Archivo de fiestas: ");
-          scanf (" %[^\n]s", fiestas_filename);
-          patan_fiestas_serialize (fiestas_filename, fiestas);
-
-          printf ("Archivo de asistencias: ");
-          scanf (" %[^\n]s", asistencias_filename);
-          patan_asistencias_serialize (asistencias_filename, fiestas);
-
-          break;
-        }
-        case PATAN_OPT_NO:
-          break;
-        default:
-          break;
-      }
-      
-      /* TODO 
-       * Preguntar al usuario antes de salir si desea guardar todo lo que ha
-       * modificado a los archivos respectivos de asistencias, fiestas
-       * y especialidades. Esto implica tomar los elementos de la tabla hash
-       * y colocarlos en los archivos respetando el formato actual para
-       * especialidades, asistencias, fiestas y alumnos.
-       */
       ret = FALSE;
       break;
     }
@@ -492,9 +458,13 @@ patan_console_menu (PatanEspecialidades * especialidades,
 
 void
 patan_console_loop (PatanEspecialidades * especialidades,
-    PatanAlumnos * alumnos, PatanFiestas * fiestas)
+    PatanAlumnos * alumnos, PatanFiestas * fiestas,
+    const char * especialidades_filename, const char * alumnos_filename,
+    const char * fiestas_filename, const char * asistencias_filename)
 {
-  while (patan_console_menu (especialidades, alumnos, fiestas) == TRUE);
+  while (patan_console_menu (especialidades, alumnos, fiestas,
+      especialidades_filename, alumnos_filename, fiestas_filename,
+      asistencias_filename) == TRUE);
 }
 
 
@@ -504,10 +474,18 @@ main (int argc, char ** argv)
   PatanEspecialidades *especialidades;
   PatanAlumnos *alumnos;
   PatanFiestas *fiestas;
+  char *especialidades_filename, *alumnos_filename;
+  char *asistencias_filename, *fiestas_filename;
 
-  patan_console_ask_for_files (&especialidades, &alumnos, &fiestas);
+  patan_console_ask_for_files (&especialidades, &alumnos, &fiestas,
+      &especialidades_filename, &alumnos_filename, &fiestas_filename,
+      &asistencias_filename);
 
-  patan_console_loop (especialidades, alumnos, fiestas);  
+  printf ("%s\n", alumnos_filename);
+
+  patan_console_loop (especialidades, alumnos, fiestas,
+      especialidades_filename, alumnos_filename, fiestas_filename,
+      asistencias_filename);  
 
   return 0;
 }
