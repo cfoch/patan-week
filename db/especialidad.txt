@@ -1,0 +1,8 @@
+101 Ingenieria informatica
+102 Quimica
+103 Estadistica
+104 Fisica
+105 Ingenieria Linguistica
+106 Ciencias de las Artes Visuales
+107 Musica
+108 Matematica
