@@ -262,3 +262,31 @@ patan_parse_fiestas (const char * filename)
   return hash_table;
 }
 
+
+static void
+_patan_fiesta_serialize (QHashKeyValue * fiesta_kv, FILE * f_alumnos)
+{
+  char buf[1000];
+  FiestaValue *fiesta_val;
+
+  fiesta_val = FIESTA_VALUE (fiesta_kv->value);
+
+  sprintf (buf, "%s %s %d %s", fiesta_kv->key, fiesta_val->nombre,
+      fiesta_val->precio, q_date_to_string (&(fiesta_val->fecha)));
+  fprintf (f_alumnos, "%s\n",  buf);
+}
+
+void
+patan_fiestas_serialize (const char * out_filename,
+    QHashTable * fiestas)
+{
+  FILE *f;
+  f = fopen (out_filename, "w");
+
+  if (!f)
+    return NULL;
+
+  q_hash_table_foreach (fiestas, _patan_fiesta_serialize, f);
+
+  fclose (f);
+}

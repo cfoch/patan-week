@@ -32,7 +32,9 @@ typedef enum {
   PATAN_OPT_SORT_FIESTAS_BY_FECHA = 3,
   /* Extras */
   PATAN_OPT_BACK = 0,
-  PATAN_OPT_EXIT = -1
+  PATAN_OPT_EXIT = -1,
+  PATAN_OPT_YES = 'y',
+  PATAN_OPT_NO = 'n'
 } PatanOpt;
 
 void
@@ -122,6 +124,17 @@ validate_id_alumno (char * id)
       return 0;   
   return (8 == strlen(id));
 }
+
+char
+patan_console_loop_exit_screen_message (int * error)
+{
+  char opt;
+  printf ("¿Desea guardar los cambios? y/n: ");
+  scanf ("%c", &opt);
+  *error = (opt != 'y') || (opt != 'n');
+  return opt;
+}
+
 
 qboolean
 patan_console_menu (PatanEspecialidades * especialidades,
@@ -413,17 +426,54 @@ patan_console_menu (PatanEspecialidades * especialidades,
             PATAN_SORT_BY_ID);
       else
         printf ("Alumno no registrado.\n");
-      /* TODO
-       * 1. Pedir al usuario que escriba el codigo del alumno.
-       * 1.1 SI el codigo no es valido, entonces salir del menu.
-       * 2. Se muestra la lista de las fiestas a las que asisitio el alumno.
-       *
-       * Para salir del menu se puede usar el truco de PATAN_OPT_BACK,
-       * ver arriba.
-       */
       break;
     }
     case PATAN_OPT_EXIT:
+    {
+      char opt;
+      int error;
+
+      do {
+        printf ("¿Desea guardar los cambios? y/n: ");
+        scanf ("%c", &opt);
+        error = opt != 'y';
+        Q_DEBUG ("opt: %c", opt);
+        Q_DEBUG ("error: %d", error);
+      } while (error);
+
+      switch (opt) {
+        case PATAN_OPT_YES:
+        {
+          char especialidades_filename[256];
+          char alumnos_filename[256];
+          char fiestas_filename[256];
+          char asistencias_filename[256];
+
+          printf ("Archivo de especialidades: ");
+          scanf (" %[^\n]s", especialidades_filename);
+          patan_especialidades_serialize (especialidades_filename,
+              especialidades);
+
+          printf ("Archivo de alumnos: ");
+          scanf (" %[^\n]s", alumnos_filename);
+          patan_alumnos_serialize (alumnos_filename, alumnos);
+
+          printf ("Archivo de fiestas: ");
+          scanf (" %[^\n]s", fiestas_filename);
+          patan_fiestas_serialize (fiestas_filename, fiestas);
+
+          printf ("Archivo de asistencias: ");
+          scanf (" %[^\n]s", asistencias_filename);
+          patan_asistencias_serialize (asistencias_filename, fiestas);
+
+          break;
+        }
+        case PATAN_OPT_NO:
+          break;
+        default:
+          break;
+      }
+      
       /* TODO 
        * Preguntar al usuario antes de salir si desea guardar todo lo que ha
        * modificado a los archivos respectivos de asistencias, fiestas
@@ -433,6 +483,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
        */
       ret = FALSE;
       break;
+    }
     default:
       ret = TRUE;
   }
@@ -441,7 +492,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
 
 void
 patan_console_loop (PatanEspecialidades * especialidades,
-  PatanAlumnos * alumnos, PatanFiestas * fiestas)
+    PatanAlumnos * alumnos, PatanFiestas * fiestas)
 {
   while (patan_console_menu (especialidades, alumnos, fiestas) == TRUE);
 }

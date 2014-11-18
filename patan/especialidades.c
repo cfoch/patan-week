@@ -132,3 +132,27 @@ patan_parse_especialidades (const char * filename) {
 
   return hash_table;
 }
+
+static void
+_patan_especialidad_serialize (QHashKeyValue * especialidad,
+    FILE * f_especialidades)
+{
+  char buf[1000];
+  sprintf (buf, "%s %s", especialidad->key, especialidad->value);
+  fprintf (f_especialidades, "%s\n",  buf);
+}
+
+void
+patan_especialidades_serialize (const char * out_filename,
+    QHashTable * especialidades)
+{
+  FILE *f;
+  f = fopen (out_filename, "w");
+
+  if (!f)
+    return NULL;
+
+  q_hash_table_foreach (especialidades, _patan_especialidad_serialize, f);
+
+  fclose (f);
+}

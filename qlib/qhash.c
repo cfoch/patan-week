@@ -103,3 +103,10 @@ q_hash_table_get_key_value_by_data (QHashTable * hash_table, qpointer data,
   return NULL;
 }
 
+void
+q_hash_table_foreach (QHashTable * hash_table, QFunc func, qpointer user_data)
+{
+  int i;
+  for (i = 0; i < hash_table->size; i++)
+    q_slist_foreach (hash_table->table[i], func, user_data);
+}

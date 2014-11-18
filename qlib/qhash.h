@@ -37,5 +37,7 @@ QSList*         q_hash_table_get_key_values (QHashTable * hash_table);
 QHashKeyValue * q_hash_table_get_key_value_by_data (QHashTable * hash_table,
                                                     qpointer data,
                                                     QEqualFunc func);
+void            q_hash_table_foreach            (QHashTable * hash_table,
+                                                QFunc func, qpointer user_data);
 
 #endif /* __Q_HASH_H__ */

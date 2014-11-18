@@ -189,7 +189,7 @@ patan_parse_alumnos (const char * filename, QHashTable *especialidades) {
       something[i] = c;
       i++;
     }
-    something[i] = '\0';
+    something[i - 1] = '\0';
     nombre = strdup (something);
     Q_DEBUG ("Nombre Alumno: %s", something);
 
@@ -248,3 +248,31 @@ patan_parse_alumnos (const char * filename, QHashTable *especialidades) {
   return hash_table;
 }
 
+static void
+_patan_alumno_serialize (QHashKeyValue * alumno_kv, FILE * f_alumnos)
+{
+  char buf[1000];
+  AlumnoValue *alumno_val;
+
+  alumno_val = ALUMNO_VALUE (alumno_kv->value);
+
+  sprintf (buf, "%s %s %s %s", alumno_kv->key, alumno_val->nombre,
+      alumno_val->especialidad->key,
+      q_date_to_string (&(alumno_val->fecha_nacimiento)));
+  fprintf (f_alumnos, "%s\n",  buf);
+}
+
+void
+patan_alumnos_serialize (const char * out_filename,
+    QHashTable * alumnos)
+{
+  FILE *f;
+  f = fopen (out_filename, "w");
+
+  if (!f)
+    return NULL;
+
+  q_hash_table_foreach (alumnos, _patan_alumno_serialize, f);
+
+  fclose (f);
+}

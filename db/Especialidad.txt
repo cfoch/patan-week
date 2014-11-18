@@ -1,0 +1,10 @@
+101 Ingenieria Informatica
+102 Quimica
+103 Estadistica
+104 Fisica
+105 Educacion
+106 Derecho
+107 Economia
+108 Matematica
+109 Gestion y Alta Direccion
+110 Pintura
