@@ -11,7 +11,7 @@ typedef QHashTable PatanAlumnos;
 typedef struct _AlumnoValue AlumnoValue;
 
 struct _AlumnoValue {
-  char *nombre;
+  const char *nombre;
   QDate fecha_nacimiento;
   QHashKeyValue *especialidad;
   /* This is an easter egg dedicated to our friend Oscar Fiestas */
@@ -32,6 +32,6 @@ QHashTable*     patan_parse_alumnos       (const char * filename,
                                           QHashTable * especialidades);
 void            patan_alumno_value_print  (qpointer data, qpointer user_data);
 int             patan_alumno_eq_nombre    (QHashKeyValue * alumno_kv,
-                                          char * nombre);
+                                            char * nombre);
 
 #endif

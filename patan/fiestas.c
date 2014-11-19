@@ -2,21 +2,37 @@
 #include <stdio.h>
 #include "fiestas.h"
 
-/* TODO Liberar estructura FiestaValue de alumno
+void
+patan_fiesta_value_free (QHashKeyValue * fiesta_kv, qpointer user_data)
+{
+  FiestaValue *fiesta_val;
+
+  fiesta_val = FIESTA_VALUE (fiesta_kv->value);
+
+  Q_DEBUG ("Liberando FiestaValue.", NULL);
+  Q_DEBUG ("Liberando FiestaValue. Liberar lista.", NULL);
+  q_slist_free (fiesta_val->asistentes);
+  Q_DEBUG ("Liberando FiestaValue. Liberar cola.", NULL);
+  q_queue_free (fiesta_val->registro_interes);
+  Q_DEBUG ("Liberando FiestaValue. Liberar estructura.", NULL);
+  free (fiesta_val);
+  free (fiesta_kv);
+  Q_DEBUG ("Liberando FiestaValue.", NULL);
+}
 
 void
-patan_fiesta_value_free (PatanFiestas * alumnos)
-
-*/
-
-
-/* TODO Liberar tabla hash de fiestas, reusando patan_fiestas_value_free
-
-void
-patan_fiestas_free (PatanFiestas * alumnos)
-
-*/
-
+patan_fiestas_free (PatanFiestas * fiestas)
+{
+  int i;
+  Q_DEBUG ("Liberando PatanFiestas.", NULL);
+  for (i=0; i < fiestas->size ; i++) {
+    q_slist_foreach (fiestas->table[i], patan_fiesta_value_free, NULL);
+    q_slist_free (fiestas->table[i]);
+  }
+  free (fiestas->table); 
+  free (fiestas);  
+  Q_DEBUG ("Liberando PatanFiestas.", NULL);
+}
 
 FiestaValue *
 fiesta_value_new (const char * nombre, int precio, QDate * fecha)

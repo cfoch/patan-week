@@ -219,9 +219,9 @@ patan_console_menu (PatanEspecialidades * especialidades,
       scanf (" %[^\n]s", nombre);
       Q_DEBUG ("Nombre de fiesta: %s", nombre);
 
-      printf ("Fecha de nacimiento (dd mm yyyy): ");
+      printf ("Fecha de la fiesta (dd mm yyyy): ");
       scanf ("%d %d %d", &(date.day), &(date.month), &(date.year));
-      Q_DEBUG ("Fecha de nacimiento: %s", q_date_to_string (&date));
+      Q_DEBUG ("Fecha de la fiesta: %s", q_date_to_string (&date));
 
       printf ("Precio: ");
       scanf ("%d", &precio);
@@ -499,6 +499,14 @@ patan_console_loop (PatanEspecialidades * especialidades,
   while (patan_console_menu (especialidades, alumnos, fiestas) == TRUE);
 }
 
+void
+patan_free_all (PatanEspecialidades *especialidad, PatanAlumnos *alumnos,
+    PatanFiestas *fiestas)
+{
+  patan_especialidades_free (especialidad);  
+  patan_fiestas_free (fiestas);
+  patan_alumnos_free (alumnos);
+}
 
 int
 main (int argc, char ** argv)
@@ -509,7 +517,9 @@ main (int argc, char ** argv)
 
   patan_console_ask_for_files (&especialidades, &alumnos, &fiestas);
 
-  patan_console_loop (especialidades, alumnos, fiestas);  
+  patan_console_loop (especialidades, alumnos, fiestas);
+
+  patan_free_all (especialidades, alumnos, fiestas);
 
   return 0;
 }

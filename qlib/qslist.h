@@ -17,7 +17,7 @@ qboolean    q_slist_is_empty (QSList *list);
 QSList*     q_slist_find_compare (QSList *list, qpointer data, QEqualFunc func);
 QSList*     q_slist_sort (QSList * list, QCompareFunc cmp_func);
 void        q_slist_foreach (QSList * list, QFunc func, qpointer user_data);
-QSList*     q_slist_free (QSList *list);
+void        q_slist_free (QSList *list);
 
 
 #endif /* __Q_SLIST_H__ */

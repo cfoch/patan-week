@@ -2,24 +2,29 @@
 #include <stdio.h>
 #include "alumnos.h"
 
-
-/* TODO Liberar estructura AlumnoValue de alumno
-
 void
-patan_alumno_value_free (PatanAlumnos * alumnos)
-
-*/
-
-
-/* TODO Liberar tabla hash de alumnos, reusando patan_alumno_value_free
+patan_alumno_value_free (QHashKeyValue * alumno_kv, qpointer user_data)
+{
+  AlumnoValue *alumno_val;
+  alumno_val = ALUMNO_VALUE (alumno_kv->value);
+  free (alumno_val);
+  free (alumno_kv);
+}
 
 void
 patan_alumnos_free (PatanAlumnos * alumnos)
-
-*/
-
-
-
+{
+  int i;
+  Q_DEBUG ("Liberando PatanAlumnos.", NULL);
+  for (i=0; i < alumnos->size; i++)
+  {
+    q_slist_foreach (alumnos->table[i], patan_alumno_value_free, NULL);
+    q_slist_free (alumnos->table[i]);    
+  }
+  free (alumnos->table);
+  free (alumnos);
+  Q_DEBUG ("Liberando PatanAlumnos.", NULL);
+}
 
 AlumnoValue *
 alumno_value_new (const char * nombre, QDate *fecha_nacimiento,

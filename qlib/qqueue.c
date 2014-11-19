@@ -71,21 +71,10 @@ q_queue_find (QQueue * queue, qpointer data, QEqualFunc func)
   return q_list_find_compare (queue->head, data, func);
 }
 
-/**
- * q_slist_free:
- *
- * Free a list and free each data element.
- *
- * Returns: an empty list.
- **/
-
-QQueue*
+void
 q_queue_free (QQueue * queue)
 {
-
   q_list_free (queue->head);
   free (queue);  
-
-  return NULL;
 }
 
