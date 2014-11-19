@@ -220,6 +220,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
       char nombre[100];
       QDate date;
       int precio;
+      int aforo;
 
       printf ("ID de fiesta: ");
       scanf ("%s", id);
@@ -237,7 +238,11 @@ patan_console_menu (PatanEspecialidades * especialidades,
       scanf ("%d", &precio);
       Q_DEBUG ("Precio: %d", precio);
 
-      patan_fiestas_insert (fiestas, id, nombre, precio, &date);
+      printf ("Registrar aforo de fiesta: ");
+      scanf ("%d", &aforo);
+      Q_DEBUG ("Aforo: %d", precio);
+
+      patan_fiestas_insert (fiestas, id, nombre, precio, &date, aforo);
       Q_DEBUG ("Fiesta registrada: ", NULL);
 
       break;
@@ -399,7 +404,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
       QHashKeyValue *fiesta_kv;
       char fiesta[100];
       printf ("Ingrese nombre de fiesta: ");
-      scanf ("%s", fiesta);
+      scanf (" %[^\n]s", fiesta);
 
       fiesta_kv = q_hash_table_get_key_value_by_data (fiestas, fiesta,
           patan_fiesta_eq_nombre);
@@ -414,7 +419,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
       QHashKeyValue *fiesta_kv;
       char fiesta[100];
       printf ("Ingrese nombre de fiesta: ");
-      scanf ("%s", fiesta);
+      scanf (" %[^\n]s", fiesta);
 
       fiesta_kv = q_hash_table_get_key_value_by_data (fiestas, fiesta,
           patan_fiesta_eq_nombre);

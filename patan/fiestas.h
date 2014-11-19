@@ -25,10 +25,10 @@ struct _FiestaValue {
 
 QHashTable*     patan_fiestas_new     ();
 FiestaValue*    fiesta_value_new      (const char * nombre, int precio,
-                                      QDate *fecha);
+                                      QDate *fecha, int aforo);
 void            patan_fiestas_insert  (QHashTable * hash_table, const char * id,
                                       const char * nombre, int precio,
-                                      QDate * date);
+                                      QDate * date, int aforo);
 QHashTable*     patan_parse_fiestas   (const char * filename);
 void            patan_fiestas_print   (QSList * alumnos_list,
                                       PatanSortBy sort_by);

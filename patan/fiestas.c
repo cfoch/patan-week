@@ -35,7 +35,7 @@ patan_fiestas_free (PatanFiestas * fiestas)
 }
 
 FiestaValue *
-fiesta_value_new (const char * nombre, int precio, QDate * fecha)
+fiesta_value_new (const char * nombre, int precio, QDate * fecha, int aforo)
 {
   FiestaValue* fiesta_value;
 
@@ -52,8 +52,8 @@ fiesta_value_new (const char * nombre, int precio, QDate * fecha)
   fiesta_value->registro_interes = q_queue_new ();
   fiesta_value->monto_recaudado = 0;
 
-  fiesta_value->aforo = -1;
-  fiesta_value->cantidad_inscritos = -1;
+  fiesta_value->aforo = aforo;
+  fiesta_value->cantidad_inscritos = 0;
   return fiesta_value;
 }
 
@@ -136,6 +136,10 @@ patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv)
   registro_interes = fiesta_val->registro_interes;
   asistentes = fiesta_val->asistentes;
 
+  Q_DEBUG ("Cantidad de elementos en la cola de interes: %d", 
+      registro_interes->length);
+  Q_DEBUG ("Aforo: %d", fiesta_val->aforo);
+
   for (i = 0; i < registro_interes->length && i < fiesta_val->aforo; i++) {
     QHashKeyValue *alumno_kv;
     alumno_kv = q_queue_pop_head (registro_interes);
@@ -165,11 +169,11 @@ patan_fiestas_new ()
 
 void
 patan_fiestas_insert (QHashTable * hash_table, const char * id,
-    const char * nombre, int precio, QDate * date)
+    const char * nombre, int precio, QDate * date, int aforo)
 {
   Q_DEBUG ("Insertando fiesta", NULL);
   q_hash_table_insert (hash_table, strdup (id),
-      fiesta_value_new (strdup (nombre), precio, date));
+      fiesta_value_new (strdup (nombre), precio, date, aforo));
 }
 
 int
@@ -186,7 +190,7 @@ patan_fiesta_registrar_interes (QHashKeyValue * fiesta_kv,
   AlumnoValue *alumno_val = ALUMNO_VALUE (alumno_kv->value);
   FiestaValue *fiesta_val = FIESTA_VALUE (fiesta_kv->value);
 
-  q_queue_push_head (fiesta_val->registro_interes, alumno_kv);
+  q_queue_push_tail (fiesta_val->registro_interes, alumno_kv);
 }
 
 /* Parsear archivo de fiestas */
@@ -273,7 +277,9 @@ patan_parse_fiestas (const char * filename)
 
 
     q_hash_table_insert (hash_table, strdup (id_fiesta),
-        fiesta_value_new (strdup (nombre), precio, &date));
+        fiesta_value_new (strdup (nombre), precio, &date, -1));
+
+    /* Registramos un aforo -1 ya que los archivos no guardan aforo */
 
   } while (c != EOF);
 
