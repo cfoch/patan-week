@@ -31,6 +31,9 @@ typedef enum {
   PATAN_OPT_SORT_FIESTAS_BY_ID = 1,
   PATAN_OPT_SORT_FIESTAS_BY_NOMBRE = 2,
   PATAN_OPT_SORT_FIESTAS_BY_FECHA = 3,
+  /* Reportes */
+  PATAN_OPT_MOSTRAR_BY_FIESTA = 1,
+  PATAN_OPT_MOSTRAR_BY_TODAS_FIESTAS = 2,
   /* Extras */
   PATAN_OPT_BACK = 0,
   PATAN_OPT_EXIT = -1,
@@ -441,9 +444,33 @@ patan_console_menu (PatanEspecialidades * especialidades,
       break;
     }
     case PATAN_OPT_MOSTRAR_RECAUDACION:
-    {
-      
+    {      
+      QHashKeyValue *fiesta_kv;
+      char fiesta[100];
+      int i;     
       patan_console_show_select_report ();
+      printf ("Ingrese opcion: ");
+      scanf ("%d", &opt);
+
+      switch (opt) {
+        case PATAN_OPT_MOSTRAR_BY_FIESTA:
+          printf ("Ingrese nombre de fiesta: ");
+          scanf ("%s", fiesta);
+          fiesta_kv = q_hash_table_get_key_value_by_data (fiestas, fiesta,
+              patan_fiesta_eq_nombre);
+          if (fiesta_kv)
+            printf ("Total Recaudado: %d\n",
+                FIESTA_VALUE (fiesta_kv->value)->monto_recaudado);
+          else
+            printf ("Nombre de fiesta no registrado.\n");
+          break;
+        case PATAN_OPT_MOSTRAR_BY_TODAS_FIESTAS:            
+          printf ("Total Recaudado por todas las fiesta: %d\n", patan_fiestas_obtener_total (fiestas));
+          break;
+        default:          
+          opt = PATAN_OPT_BACK;
+          break;  
+      }     
       break;
     }
     case PATAN_OPT_EXIT:
@@ -491,14 +518,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
         default:
           break;
       }
-      
-      /* TODO 
-       * Preguntar al usuario antes de salir si desea guardar todo lo que ha
-       * modificado a los archivos respectivos de asistencias, fiestas
-       * y especialidades. Esto implica tomar los elementos de la tabla hash
-       * y colocarlos en los archivos respetando el formato actual para
-       * especialidades, asistencias, fiestas y alumnos.
-       */
+
       ret = FALSE;
       break;
     }
