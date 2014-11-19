@@ -7,6 +7,11 @@
 #define qalloc(type, n)           ((type *) malloc (n * sizeof (type)))
 
 #define q_min(a, b)               a < b ? a : b
+#define q_is_latin_alpha(c)       (isalpha(c) || \
+                                  c == 'á' || c == 'é' || c == 'í' || c == 'ó' \
+                                  || c == 'ú' || \
+                                  c == 'Á' || c == 'É' || c == 'Í' || c == 'Ó' \
+                                  || c == 'Ú')
 
 #ifdef DEBUG
   #define Q_DEBUG(fmt, args...) \

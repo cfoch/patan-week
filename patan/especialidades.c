@@ -138,7 +138,7 @@ patan_parse_especialidades (const char * filename) {
 
 
     i = 0;
-    while ((c = fgetc (f)) && (isalpha (c) || (c == ' '))) {
+    while ((c = fgetc (f)) && (q_is_latin_alpha (c) || (c == ' '))) {
       something[i] = c;
       i++;
     }

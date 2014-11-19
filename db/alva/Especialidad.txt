@@ -1,0 +1,43 @@
+101 Antropologia
+102 Arqueologia
+103 Arquitectura
+104 Ciencia Politica y Gobierno
+105 Ciencias de la Informacion
+106 Comunicacion Audiovisual
+107 Comunicacion para el Desarrollo
+108 Contabilidad
+109 Derecho
+110 Danza
+111 Disenho Grafico
+112 Disenho Industrial
+113 Economia
+114 Educacion Inicial
+115 Educacion Primaria
+116 Escultura
+117 Estadistica
+118 Filosofia
+119 Fisica
+120 Geografia y Medio Ambiente
+121 Gestion en Artes Escenicas
+122 Gestion y Alta Direccion
+123 Grabado
+124 Historia
+125 Ingenieria Civil
+126 Ingenieria Electronica
+127 Ingenieria Geologica
+128 Ingenieria Industrial
+129 Ingenieria Informatica
+130 Ingenieria Mecanica
+131 Ingenieria Mecatronica
+132 Ingenieria de Minas
+133 Ingenieria de las Telecomunicaciones
+134 Linguistica y Literatura
+135 Matematicas
+136 Musica
+137 Periodismo
+138 Pintura
+139 Psicologia
+140 Publicidad
+141 Quimica
+142 Sociologia
+143 Teatro

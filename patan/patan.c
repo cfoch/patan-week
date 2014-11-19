@@ -129,7 +129,7 @@ patan_registrar_asistencia (QHashKeyValue * alumno_kv,
 
   Q_DEBUG ("La fiesta %s tiene %d inscritos", fiesta_val->nombre,
       fiesta_val->cantidad_inscritos);
-  Q_DEBUG ("La fiesta %s tiene un total de S/.%d", fiesta_val->nombre,
+  Q_DEBUG ("La fiesta %s tiene un total de S/.%7.2f", fiesta_val->nombre,
       fiesta_val->monto_recaudado);
 
   fiesta_val->cantidad_inscritos++;
@@ -137,6 +137,6 @@ patan_registrar_asistencia (QHashKeyValue * alumno_kv,
 
   Q_DEBUG ("Ahora la fiesta %s tiene %d inscritos", fiesta_val->nombre,
       fiesta_val->cantidad_inscritos);
-  Q_DEBUG ("Ahora la fiesta %s tiene un total de S/.%d", fiesta_val->nombre,
+  Q_DEBUG ("Ahora la fiesta %s tiene un total de S/.%7.2f", fiesta_val->nombre,
       fiesta_val->monto_recaudado);
 }

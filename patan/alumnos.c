@@ -190,7 +190,7 @@ patan_parse_alumnos (const char * filename, QHashTable *especialidades) {
     Q_DEBUG ("ID Alumno: %s", something);
 
     i = 0;
-    while ((c = fgetc (f)) && (isalpha (c) || (c == ' '))) {
+    while ((c = fgetc (f)) && (q_is_latin_alpha (c) || (c == ' '))) {
       something[i] = c;
       i++;
     }

@@ -13,21 +13,21 @@ typedef struct _FiestaValue FiestaValue;
 
 struct _FiestaValue {
   const char *nombre;
-  int precio;
+  double precio;
   QDate fecha;
   QQueue *registro_interes;
   /* List of QHashKeyValue containing a key-value pair of AlumnoValue* */
   QSList *asistentes;
   int aforo;
-  int monto_recaudado;
+  double monto_recaudado;
   int cantidad_inscritos;
 };
 
 QHashTable*     patan_fiestas_new     ();
-FiestaValue*    fiesta_value_new      (const char * nombre, int precio,
+FiestaValue*    fiesta_value_new      (const char * nombre, double precio,
                                       QDate *fecha, int aforo);
 void            patan_fiestas_insert  (QHashTable * hash_table, const char * id,
-                                      const char * nombre, int precio,
+                                      const char * nombre, double precio,
                                       QDate * date, int aforo);
 QHashTable*     patan_parse_fiestas   (const char * filename);
 void            patan_fiestas_print   (QSList * alumnos_list,
@@ -39,7 +39,7 @@ int             patan_fiesta_eq_nombre (QHashKeyValue * fiesta_kv,
                                           char * nombre_fiesta);
 void            patan_fiesta_print_registro_interes (QHashKeyValue * fiesta_kv);
 void            patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv);
-int             patan_fiestas_obtener_total (QHashTable * fiestas);
+double          patan_fiestas_obtener_total (QHashTable * fiestas);
 
 
 #endif

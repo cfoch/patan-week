@@ -35,7 +35,7 @@ patan_fiestas_free (PatanFiestas * fiestas)
 }
 
 FiestaValue *
-fiesta_value_new (const char * nombre, int precio, QDate * fecha, int aforo)
+fiesta_value_new (const char * nombre, double precio, QDate * fecha, int aforo)
 {
   FiestaValue* fiesta_value;
 
@@ -153,18 +153,19 @@ patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv)
 }
 
 static void
-_sumar_total_recaudado (QHashKeyValue * fiesta_kv, int * total)
+_sumar_total_recaudado (QHashKeyValue * fiesta_kv, double * total)
 {
-  Q_DEBUG ("Total actual S/.%d", *total); 
-  Q_DEBUG ("Precio a sumar: S/.%d", FIESTA_VALUE (fiesta_kv->value)->precio);
+  Q_DEBUG ("Total actual S/.%7.2f", *total); 
+  Q_DEBUG ("Precio a sumar: S/.%7.2f", FIESTA_VALUE (fiesta_kv->value)->precio);
   (*total) += FIESTA_VALUE (fiesta_kv->value)->monto_recaudado;
-  Q_DEBUG ("Total es ahora S/.%d", *total); 
+  Q_DEBUG ("Total es ahora S/.%7.2f", *total); 
 }
 
-int
+double
 patan_fiestas_obtener_total (QHashTable * fiestas)
 {
-  int i, total = 0;
+  int i;
+  double total = 0;
 
   for (i = 0; i < fiestas->size; i++)
     q_slist_foreach (fiestas->table[i], _sumar_total_recaudado, &total);
@@ -193,7 +194,7 @@ patan_fiestas_new ()
 
 void
 patan_fiestas_insert (QHashTable * hash_table, const char * id,
-    const char * nombre, int precio, QDate * date, int aforo)
+    const char * nombre, double precio, QDate * date, int aforo)
 {
   Q_DEBUG ("Insertando fiesta", NULL);
   q_hash_table_insert (hash_table, strdup (id),
@@ -240,7 +241,7 @@ patan_parse_fiestas (const char * filename)
     int i, j;
     char something[1000];
     i = 0;
-    int precio;
+    double precio;
     char *id_fiesta, *nombre;
     QDate date;
 
@@ -268,12 +269,12 @@ patan_parse_fiestas (const char * filename)
     i = 0;
     something[i] = c;
     i++;
-    while ((c = fgetc (f)) && isdigit (c) && (c != ' ')) {
+    while ((c = fgetc (f)) && (c == '.' || isdigit (c)) && (c != ' ')) {
       something[i] = c;
       i++;
     }
     something[i] = '\0';
-    precio = atoi (something);
+    precio = atof (something);
 
     i = 0;
     while ((c = fgetc (f)) && isdigit (c)) {

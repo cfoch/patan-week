@@ -222,7 +222,7 @@ patan_console_menu (PatanEspecialidades * especialidades,
       char id[9];
       char nombre[100];
       QDate date;
-      int precio;
+      double precio;
       int aforo;
 
       printf ("ID de fiesta: ");
@@ -238,12 +238,12 @@ patan_console_menu (PatanEspecialidades * especialidades,
       Q_DEBUG ("Fecha de la fiesta: %s", q_date_to_string (&date));
 
       printf ("Precio: ");
-      scanf ("%d", &precio);
-      Q_DEBUG ("Precio: %d", precio);
+      scanf ("%f", &precio);
+      Q_DEBUG ("Precio: %7.2f", precio);
 
       printf ("Registrar aforo de fiesta: ");
       scanf ("%d", &aforo);
-      Q_DEBUG ("Aforo: %d", precio);
+      Q_DEBUG ("Aforo: %d", aforo);
 
       patan_fiestas_insert (fiestas, id, nombre, precio, &date, aforo);
       Q_DEBUG ("Fiesta registrada: ", NULL);
@@ -464,13 +464,13 @@ patan_console_menu (PatanEspecialidades * especialidades,
           fiesta_kv = q_hash_table_get_key_value_by_data (fiestas, fiesta,
               patan_fiesta_eq_nombre);
           if (fiesta_kv)
-            printf ("Total Recaudado: %d\n",
+            printf ("Total Recaudado: %7.2f\n",
                 FIESTA_VALUE (fiesta_kv->value)->monto_recaudado);
           else
             printf ("Nombre de fiesta no registrado.\n");
           break;
         case PATAN_OPT_MOSTRAR_BY_TODAS_FIESTAS:            
-          printf ("Total Recaudado por todas las fiesta: %d\n", patan_fiestas_obtener_total (fiestas));
+          printf ("Total Recaudado por todas las fiesta: %7.2f\n", patan_fiestas_obtener_total (fiestas));
           break;
         default:          
           opt = PATAN_OPT_BACK;
