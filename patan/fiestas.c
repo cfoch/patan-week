@@ -155,7 +155,10 @@ patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv)
 static void
 _sumar_total_recaudado (QHashKeyValue * fiesta_kv, int * total)
 {
-  (*total) += FIESTA_VALUE (fiesta_kv->value)->precio;
+  Q_DEBUG ("Total actual S/.%d", *total); 
+  Q_DEBUG ("Precio a sumar: S/.%d", FIESTA_VALUE (fiesta_kv->value)->precio);
+  (*total) += FIESTA_VALUE (fiesta_kv->value)->monto_recaudado;
+  Q_DEBUG ("Total es ahora S/.%d", *total); 
 }
 
 int

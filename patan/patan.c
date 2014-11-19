@@ -57,8 +57,7 @@ patan_parse_asistencia (const char * filename, QHashTable *fiestas,
     alumno_kv = q_hash_table_get_key_value_by_key (alumnos, id_alumno);
     alumno_val = ALUMNO_VALUE (alumno_kv->value);
 
-    fiesta_val->asistentes = q_slist_prepend (fiesta_val->asistentes, alumno_kv);
-    alumno_val->fiestas = q_slist_prepend (alumno_val->fiestas, fiesta_kv);
+    patan_registrar_asistencia (alumno_kv, fiesta_kv);
 
   } while (c != EOF);
 
@@ -115,8 +114,12 @@ patan_registrar_asistencia (QHashKeyValue * alumno_kv,
   FiestaValue *fiesta_val;
   AlumnoValue *alumno_val;
 
+  Q_DEBUG ("Registrando asistencia.", NULL);
+
   alumno_val = ALUMNO_VALUE (alumno_kv->value);
   fiesta_val = FIESTA_VALUE (fiesta_kv->value);
+
+  Q_DEBUG ("Tomando values.", NULL);
 
   if (fiesta_val->cantidad_inscritos == fiesta_val->aforo)
     return;
@@ -124,6 +127,16 @@ patan_registrar_asistencia (QHashKeyValue * alumno_kv,
   fiesta_val->asistentes = q_slist_prepend (fiesta_val->asistentes, alumno_kv);
   alumno_val->fiestas = q_slist_prepend (alumno_val->fiestas, fiesta_kv);
 
+  Q_DEBUG ("La fiesta %s tiene %d inscritos", fiesta_val->nombre,
+      fiesta_val->cantidad_inscritos);
+  Q_DEBUG ("La fiesta %s tiene un total de S/.%d", fiesta_val->nombre,
+      fiesta_val->monto_recaudado);
+
   fiesta_val->cantidad_inscritos++;
   fiesta_val->monto_recaudado += fiesta_val->precio;
+
+  Q_DEBUG ("Ahora la fiesta %s tiene %d inscritos", fiesta_val->nombre,
+      fiesta_val->cantidad_inscritos);
+  Q_DEBUG ("Ahora la fiesta %s tiene un total de S/.%d", fiesta_val->nombre,
+      fiesta_val->monto_recaudado);
 }
