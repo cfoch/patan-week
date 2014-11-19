@@ -4,7 +4,9 @@
 #define INT_TO_QPOINTER(i)        ((qpointer)  (long) (i))
 #define QPOINTER_TO_INT(i)        ((int) (long) (i))
 
-#define qalloc(type, n)        ((type *) malloc (n * sizeof (type)))
+#define qalloc(type, n)           ((type *) malloc (n * sizeof (type)))
+
+#define q_min(a, b)               a < b ? a : b
 
 #ifdef DEBUG
   #define Q_DEBUG(fmt, args...) \

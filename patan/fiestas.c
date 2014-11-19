@@ -130,7 +130,7 @@ patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv)
   FiestaValue *fiesta_val;
   QQueue *registro_interes;
   QSList *asistentes;
-  int i;
+  int i, n_asistentes;
 
   fiesta_val = FIESTA_VALUE (fiesta_kv->value);
   registro_interes = fiesta_val->registro_interes;
@@ -140,7 +140,10 @@ patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv)
       registro_interes->length);
   Q_DEBUG ("Aforo: %d", fiesta_val->aforo);
 
-  for (i = 0; i < registro_interes->length && i < fiesta_val->aforo; i++) {
+  n_asistentes = q_min (registro_interes->length, fiesta_val->aforo);
+
+  for (i = 0; i < n_asistentes; i++) {
+    Q_DEBUG ("Se inserto %d elementos.", i + 1);
     QHashKeyValue *alumno_kv;
     alumno_kv = q_queue_pop_head (registro_interes);
     patan_registrar_asistencia (alumno_kv, fiesta_kv);

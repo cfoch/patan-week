@@ -537,9 +537,7 @@ main (int argc, char ** argv)
   PatanFiestas *fiestas;
 
   patan_console_ask_for_files (&especialidades, &alumnos, &fiestas);
-
   patan_console_loop (especialidades, alumnos, fiestas);
-
   patan_free_all (especialidades, alumnos, fiestas);
 
   return 0;
