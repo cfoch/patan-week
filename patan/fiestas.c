@@ -322,7 +322,7 @@ _patan_fiesta_serialize (QHashKeyValue * fiesta_kv, FILE * f_alumnos)
 
   fiesta_val = FIESTA_VALUE (fiesta_kv->value);
 
-  sprintf (buf, "%s %s %d %s", fiesta_kv->key, fiesta_val->nombre,
+  sprintf (buf, "%s %s %.2f %s", fiesta_kv->key, fiesta_val->nombre,
       fiesta_val->precio, q_date_to_string (&(fiesta_val->fecha)));
   fprintf (f_alumnos, "%s\n",  buf);
 }
