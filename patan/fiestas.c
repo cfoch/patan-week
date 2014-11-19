@@ -23,12 +23,15 @@ fiesta_value_new (const char * nombre, int precio, QDate * fecha)
 {
   FiestaValue* fiesta_value;
 
+  Q_DEBUG ("Creando nueva fiesta", NULL);
   fiesta_value = malloc (sizeof (FiestaValue));
   fiesta_value->nombre = nombre;
   fiesta_value->precio = precio;
   fiesta_value->fecha.day = fecha->day;
   fiesta_value->fecha.month = fecha->month;
   fiesta_value->fecha.year = fecha->year;
+  Q_DEBUG ("Fiesta de fecha: %s", q_date_to_string (&(fiesta_value->fecha)));
+
   fiesta_value->asistentes = NULL;
   fiesta_value->registro_interes = q_queue_new ();
   fiesta_value->monto_recaudado = 0;
@@ -148,6 +151,7 @@ void
 patan_fiestas_insert (QHashTable * hash_table, const char * id,
     const char * nombre, int precio, QDate * date)
 {
+  Q_DEBUG ("Insertando fiesta", NULL);
   q_hash_table_insert (hash_table, strdup (id),
       fiesta_value_new (strdup (nombre), precio, date));
 }

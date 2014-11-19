@@ -224,9 +224,11 @@ patan_console_menu (PatanEspecialidades * especialidades,
       Q_DEBUG ("Fecha de nacimiento: %s", q_date_to_string (&date));
 
       printf ("Precio: ");
-      scanf ("%d", precio);
+      scanf ("%d", &precio);
+      Q_DEBUG ("Precio: %d", precio);
 
       patan_fiestas_insert (fiestas, id, nombre, precio, &date);
+      Q_DEBUG ("Fiesta registrada: ", NULL);
 
       break;
     }
