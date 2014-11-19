@@ -17,6 +17,7 @@ typedef enum {
   PATAN_OPT_MOSTRAR_FIESTA_REGISTRO_INTERES = 10,
   PATAN_OPT_MOSTRAR_FIESTA_ASISTENTES = 11,
   PATAN_OPT_MOSTRAR_ALUMNO_FIESTAS_ASISTIDAS = 12,
+  PATAN_OPT_MOSTRAR_RECAUDACION = 13,
   
   /* Especialidades */
   PATAN_OPT_SORT_ESPECIALIDADES_BY_ID = 1,
@@ -85,6 +86,7 @@ patan_console_show_main_menu ()
   printf ("10) Mostrar registro de interés.\n");
   printf ("11) Mostrar lista de asistentes.\n");
   printf ("12) Mostrar fiestas a la que asistió un alumno.\n");
+  printf ("13) Reporte de recaudacion.\n");
   printf ("-1) Quit.\n");
 }
 
@@ -113,6 +115,14 @@ patan_console_show_sort_by_fiestas ()
   printf ("2) Ordenar por nombre.\n");
   printf ("3) Ordenar por fecha de fiesta.\n");
   printf ("-1) Back.\n");
+}
+
+static void
+patan_console_show_select_report ()
+{
+  printf ("1) Recaudacion total por fiesta.\n");
+  printf ("2) Recaudacion total por todas las fiestas.\n");
+  printf ("-1) Back.\n"); 
 }
 
 static int
@@ -428,6 +438,12 @@ patan_console_menu (PatanEspecialidades * especialidades,
             PATAN_SORT_BY_ID);
       else
         printf ("Alumno no registrado.\n");
+      break;
+    }
+    case PATAN_OPT_MOSTRAR_RECAUDACION:
+    {
+      
+      patan_console_show_select_report ();
       break;
     }
     case PATAN_OPT_EXIT:
