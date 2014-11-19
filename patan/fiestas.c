@@ -152,6 +152,24 @@ patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv)
   fiesta_val->asistentes = asistentes;
 }
 
+static void
+_sumar_total_recaudado (QHashKeyValue * fiesta_kv, int * total)
+{
+  (*total) += FIESTA_VALUE (fiesta_kv->value)->precio;
+}
+
+int
+patan_fiestas_obtener_total (QHashTable * fiestas)
+{
+  int i, total = 0;
+
+  for (i = 0; i < fiestas->size; i++)
+    q_slist_foreach (fiestas->table[i], _sumar_total_recaudado, &total);
+
+  return total;
+}
+
+
 void
 patan_fiesta_print_registro_interes (QHashKeyValue * fiesta_kv)
 {

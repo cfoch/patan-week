@@ -39,5 +39,7 @@ int             patan_fiesta_eq_nombre (QHashKeyValue * fiesta_kv,
                                           char * nombre_fiesta);
 void            patan_fiesta_print_registro_interes (QHashKeyValue * fiesta_kv);
 void            patan_fiesta_avanzar_cola (QHashKeyValue * fiesta_kv);
+int             patan_fiestas_obtener_total (QHashTable * fiestas);
+
 
 #endif

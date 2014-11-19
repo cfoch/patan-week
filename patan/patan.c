@@ -125,4 +125,5 @@ patan_registrar_asistencia (QHashKeyValue * alumno_kv,
   alumno_val->fiestas = q_slist_prepend (alumno_val->fiestas, fiesta_kv);
 
   fiesta_val->cantidad_inscritos++;
+  fiesta_val->monto_recaudado += fiesta_val->precio;
 }
